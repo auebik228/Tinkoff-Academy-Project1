@@ -1,5 +1,6 @@
 import backend.academy.WordDictionary;
 import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -8,7 +9,7 @@ public class WordDictionaryTest {
 
     private WordDictionary wordDictionary;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         wordDictionary = new WordDictionary();
     }
@@ -38,6 +39,22 @@ public class WordDictionaryTest {
         assertTrue(
             wordDictionary.hardWords().get("countries").contains(word),
             "Слово должно быть из категории 'countries' и сложного уровня");
+    }
+
+    @Test
+    public void testGetRandomWordRandomDifficultyAndRandomCategory() {
+        String word = wordDictionary.getRandomWord("", "");
+        assertNotNull(word, "Слово не должно быть null");
+        assertTrue(
+            wordDictionary.hardWords().get("countries").contains(word) ||
+                wordDictionary.hardWords().get("animals").contains(word) ||
+                wordDictionary.hardWords().get("fruits").contains(word) ||
+                wordDictionary.easyWords().get("countries").contains(word) ||
+                wordDictionary.easyWords().get("animals").contains(word) ||
+                wordDictionary.easyWords().get("fruits").contains(word) ||
+                wordDictionary.mediumWords().get("countries").contains(word) ||
+                wordDictionary.mediumWords().get("animals").contains(word) ||
+                wordDictionary.mediumWords().get("fruits").contains(word));
     }
 
 }
