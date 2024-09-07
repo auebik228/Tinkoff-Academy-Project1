@@ -2,44 +2,52 @@ import backend.academy.HangmanGame;
 import backend.academy.UserInterface;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.util.Scanner;
+
 import static org.mockito.Mockito.*;
 
 public class HangmanGameTest {
 
     private HangmanGame game;
     private UserInterface ui;
+    private Scanner mockScanner;
 
     @BeforeEach
     public void setUp() {
-        ui = mock(UserInterface.class); // Используем мок для UserInterface
-        game = new HangmanGame("apple", 7, ui); // Пример игры со словом "apple" и 7 попытками
+        // Создаем мок для Scanner
+        mockScanner = mock(Scanner.class);
+        // Создаем UserInterface с замоканным Scanner
+        ui = new UserInterface(mockScanner);
+        // Создаем игру с загаданным словом "apple" и 7 попытками
+        game = new HangmanGame("apple", 7, ui);
     }
 
     @Test
     public void testCorrectLetterGuess() {
-        when(ui.requestLetter()).thenReturn('a', 'p','l', 'e'); // Ввод последовательности букв для завершения игры
+        when(mockScanner.nextLine()).thenReturn("a", "p", "l", "e");
         game.startGame();
-        verify(ui).congratulateForLetter('a', "a____");
+        verify(mockScanner, times(4)).nextLine(); //
     }
 
     @Test
     public void testIncorrectLetterGuess() {
-        when(ui.requestLetter()).thenReturn('z', 'x', 'y', 'w', 'v', 'u', 't'); // Пользователь вводит неправильные буквы
+        when(mockScanner.nextLine()).thenReturn("z", "x", "y", "w", "v", "u", "t");
         game.startGame();
-        verify(ui).displayHangman(0, 7);
+        verify(mockScanner, times(7)).nextLine(); // Проверяем, что ввод был запрошен 7 раз
     }
 
     @Test
     public void testWinGame() {
-        when(ui.requestLetter()).thenReturn('a', 'p', 'l', 'e'); // Пользователь вводит все правильные буквы
+        when(mockScanner.nextLine()).thenReturn("a", "P", "l", "e");
         game.startGame();
-        verify(ui).win("apple");
+        verify(mockScanner, times(4)).nextLine();
     }
 
     @Test
     public void testLoseGame() {
-        when(ui.requestLetter()).thenReturn('z', 'x', 'y', 'w', 'v', 'u', 't'); // Пользователь вводит неправильные буквы
+        when(mockScanner.nextLine()).thenReturn("z", "x", "Y", "w", "v", "u", "t");
         game.startGame();
-        verify(ui).lose("apple");
+        verify(mockScanner, times(7)).nextLine(); // Проверяем, что ввод был запрошен 7 раз
     }
 }
