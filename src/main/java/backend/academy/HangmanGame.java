@@ -1,59 +1,50 @@
 package backend.academy;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
-
 public class HangmanGame {
-    char[] word;
-    char[] knownPartOfWord;
-    private int maxAttempts;
-    private int attemptsLeft;
-    private Set<Character> guessedLetters;
-    private UserInterface ui;
-    public HangmanGame(String word, int maxAttempts, UserInterface ui) {
+    private final GameState gameState;
+    private final UserInterface ui;
+
+    public HangmanGame(String word, UserInterface ui) {
         this.ui = ui;
-        this.word = word.toLowerCase().toCharArray();
-        this.knownPartOfWord = new char[word.length()];
-        for (int i = 0; i < word.length(); i++) {
-            knownPartOfWord[i] = '_';
-        }
-        this.maxAttempts = maxAttempts;
-        this.attemptsLeft = 0;
-        this.guessedLetters = new HashSet<>();
+        this.gameState = new GameState(word);
     }
-    public void startGame(){
+
+    public void startGame() {
         ui.startGame();
-        while (attemptsLeft < maxAttempts && !Arrays.equals(word, knownPartOfWord)) {
+        while (!gameState.isWordGuessed() && !gameState.isMaxAttemptsReached()) {
             char guessedLetter = ui.requestLetter();
-            if (guessedLetters.contains(guessedLetter)) {
+
+            if (gameState.getGuessedLetters().contains(guessedLetter)) {
                 ui.repeatLetter(guessedLetter);
                 continue;
-            }else{
-                guessedLetters.add(guessedLetter);
             }
-            boolean isLetterCorrect = guess(guessedLetter);
-            if (isLetterCorrect) {
-                ui.congratulateForLetter(guessedLetter, String.valueOf(knownPartOfWord));
-            }else{
-                ui.displayHangman(attemptsLeft,maxAttempts);
-                attemptsLeft++;
+
+            gameState.addGuessedLetter(guessedLetter);
+            boolean isCorrect = guessLetter(guessedLetter);
+            if (isCorrect) {
+                gameState.revealLetter(guessedLetter); // Передаём букву для раскрытия
+                ui.congratulateForLetter(guessedLetter, String.valueOf(gameState.getKnownPartOfWord()));
+            } else {
+                gameState.decrementAttempts(); // Уменьшаем количество оставшихся попыток
+                ui.displayHangman(gameState.getAttemptsLeft(), gameState.getMaxAttempts());
             }
         }
-        if (attemptsLeft == maxAttempts) {
-            ui.lose(String.valueOf(word));
-        }else{
-            ui.win(String.valueOf(word));
+
+        if (gameState.isMaxAttemptsReached()) {
+            ui.lose(String.valueOf(gameState.getWord()));
+        } else {
+            ui.win(String.valueOf(gameState.getWord()));
         }
     }
-    public boolean guess(char guessedLetter){
-        int countOfOpenLetters = 0;
-        for (int i = 0; i < word.length; i++) {
-            if (word[i] == guessedLetter) {
-                countOfOpenLetters++;
-                knownPartOfWord[i] = guessedLetter;
+
+    private boolean guessLetter(char guessedLetter) {
+        boolean isCorrect = false;
+        for (char c : gameState.getWord()) {
+            if (c == guessedLetter) {
+                isCorrect = true;
+                break;
             }
         }
-        return countOfOpenLetters > 0;
+        return isCorrect;
     }
 }
