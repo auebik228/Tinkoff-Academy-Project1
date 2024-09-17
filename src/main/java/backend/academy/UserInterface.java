@@ -1,159 +1,88 @@
 package backend.academy;
 
-import java.util.Scanner;
-
 public class UserInterface {
 
-    private final Scanner scanner;
+    private final ConsoleIO consoleIO;
+    private final Hangman hangman;
 
-    public UserInterface(Scanner scanner) {
-        this.scanner = scanner;
+    public UserInterface(ConsoleIO consoleIO, Hangman hangman) {
+        this.consoleIO = consoleIO;
+        this.hangman = hangman;
     }
-
 
     public char requestLetter() {
         while (true) {
-            System.out.println("Введите букву: ");
-            promt();
-            String input = scanner.nextLine().trim().toLowerCase();
+            consoleIO.println("Введите букву: ");
+            consoleIO.prompt();
+            String input = consoleIO.readLine().toLowerCase();
             if (input.length() == 1 && Character.isLetter(input.charAt(0))) {
                 return input.charAt(0);
             } else {
-                System.out.println("Ошибка: введите одну букву.");
+                consoleIO.println("Ошибка: введите одну букву.");
             }
         }
     }
 
-    public String requestDifficulty() {
+    public DifficultyLevels requestDifficulty() {
         while (true) {
-            System.out.println("Выберите уровень сложности (easy, medium, hard) или нажмите enter для случайного выбора: ");
-            promt();
-            String input = scanner.nextLine().trim().toLowerCase();
+            consoleIO.println("Выберите уровень сложности easy, medium, hard или none для случайного выбора: ");
+            consoleIO.prompt();
+            String input = consoleIO.readLine().toUpperCase();
 
-            if (input.equals("easy") || input.equals("medium") || input.equals("hard") || input.isEmpty()) {
-                return input;
+            if (input.equals("EASY") || input.equals("MEDIUM") || input.equals("HARD") || input.equals("NONE")) {
+                return DifficultyLevels.valueOf(input);
             } else {
-                System.out.println("Ошибка: выберите один из уровней сложности: easy, medium, hard ");
+                consoleIO.println("Ошибка: выберите один из уровней сложности: easy, medium, hard, none ");
             }
         }
     }
 
     public String requestCategory() {
         while (true) {
-            System.out.println("Выберите категорию (animals, fruits, countries) или нажмите enter для случайного выбора: ");
-            promt();
-            String input = scanner.nextLine().trim().toLowerCase();
+            consoleIO.println("Выберите категорию animals, fruits, countries или none для случайного выбора: ");
+            consoleIO.prompt();
+            String input = consoleIO.readLine().toLowerCase();
 
             if (input.equals("animals") || input.equals("fruits") || input.equals("countries") || input.isEmpty()) {
                 return input;
             } else {
-                System.out.println("Ошибка: выберите одну из категорий: animals, fruits, countries.");
+                consoleIO.println("Ошибка: выберите одну из категорий: animals, fruits, countries.");
             }
         }
     }
 
-
     public void congratulateForLetter(char letter, String knownPartOfWord) {
-        System.out.println("Поздравляем! Вы угадали букву: " + letter + System.lineSeparator() +
-                "Отгаданная часть слова - " + knownPartOfWord);
+        consoleIO.println("Поздравляем! Вы угадали букву: " + letter + System.lineSeparator() +
+            "Отгаданная часть слова - " + knownPartOfWord);
     }
 
-
-    public void displayHangman(int attemptsLeft,int maxattempts) {
-        System.out.println("К сожалению буква неверная,"+ "вы можете ошибиться еще " + (maxattempts-attemptsLeft-1) + " раз" + System.lineSeparator() +
-                " Cостояние висельника:");
-        String[] hangmanStages = {
-                """
-               ------
-               |    |
-               |
-               |
-               |
-               |
-            --------
-            """,
-                """
-               ------
-               |    |
-               |    O
-               |
-               |
-               |
-            --------
-            """,
-                """
-               ------
-               |    |
-               |    O
-               |    |
-               |
-               |
-            --------
-            """,
-                """
-               ------
-               |    |
-               |    O
-               |   /|
-               |
-               |
-            --------
-            """,
-                """
-               ------
-               |    |
-               |    O
-               |   /|\\
-               |
-               |
-            --------
-            """,
-                """
-               ------
-               |    |
-               |    O
-               |   /|\\
-               |   /
-               |
-            --------
-            """,
-                """
-               ------
-               |    |
-               |    O
-               |   /|\\
-               |   / \\
-               |
-            --------
-            """
-        };
-        System.out.println(hangmanStages[attemptsLeft]);
-    }
-
-    public void promt() {
-        System.out.print(">>");
+    public void displayHangman(int attemptsLeft, int maxAttempts) {
+        consoleIO.println("К сожалению буква неверная, вы можете ошибиться еще " + (maxAttempts - attemptsLeft) + " раз" + System.lineSeparator() +
+            "Состояние висельника:");
+        consoleIO.println(hangman.getHangmanStage(attemptsLeft - 1));
     }
 
     public void startGame() {
-        System.out.println("Игра началась");
+        consoleIO.println("Игра началась");
     }
 
     public void lose(String word) {
-        System.out.println("Вы проиграли, загаданное слово - " + word);
+        consoleIO.println("Вы проиграли, загаданное слово - " + word);
     }
 
     public void win(String word) {
-        System.out.println("Вы победили, загаданное слово - " + word);
+        consoleIO.println("Вы победили, загаданное слово - " + word);
     }
+
     public void repeatLetter(Character c) {
-        System.out.println("Вы уже пробовали букву "+ c+", попробуйте другую");
-    }
-    public void startProgram(){
-        System.out.println("Консольная игра Висельник начала свою работу");
-    }
-    public void remindGameSettings(String difficulty,String category) {
-        System.out.println();
+        consoleIO.println("Вы уже пробовали букву " + c + ", попробуйте другую");
     }
 
+    public void startProgram() {
+        consoleIO.println("Консольная игра Висельник начала свою работу");
+    }
 
+    public void remindGameSettings(String difficulty, String category) {
+        consoleIO.println("Настройки игры: уровень сложности - " + difficulty + ", категория - " + category);
+    }
 }
