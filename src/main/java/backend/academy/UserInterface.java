@@ -52,13 +52,13 @@ public class UserInterface {
     }
 
     public void congratulateForLetter(char letter, String knownPartOfWord) {
-        consoleIO.println("Поздравляем! Вы угадали букву: " + letter + System.lineSeparator() +
-            "Отгаданная часть слова - " + knownPartOfWord);
+        consoleIO.println("Поздравляем! Вы угадали букву: " + letter + System.lineSeparator()
+            + "Отгаданная часть слова - " + knownPartOfWord);
     }
 
     public void displayHangman(int attemptsLeft, int maxAttempts) {
-        consoleIO.println("К сожалению буква неверная, вы можете ошибиться еще " + (maxAttempts - attemptsLeft) + " раз" + System.lineSeparator() +
-            "Состояние висельника:");
+        consoleIO.println("К сожалению буква неверная, вы можете ошибиться еще " + (maxAttempts - attemptsLeft) + " раз"
+            + System.lineSeparator() + "Состояние висельника:");
         consoleIO.println(hangman.getHangmanStage(attemptsLeft - 1));
     }
 

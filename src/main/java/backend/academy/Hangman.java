@@ -3,8 +3,8 @@ package backend.academy;
 public class Hangman {
     private final String[] hangmanStages;
 
-    public Hangman(){
-        hangmanStages = new String[]{
+    public Hangman() {
+        hangmanStages = new String[] {
             """
                    ------
                    |    |
@@ -14,7 +14,7 @@ public class Hangman {
                    |
                 --------
                 """,
-                """
+            """
                        ------
                        |    |
                        |    O
@@ -23,7 +23,7 @@ public class Hangman {
                        |
                     --------
                     """,
-                """
+            """
                        ------
                        |    |
                        |    O
@@ -32,7 +32,7 @@ public class Hangman {
                        |
                     --------
                     """,
-                """
+            """
                        ------
                        |    |
                        |    O
@@ -41,7 +41,7 @@ public class Hangman {
                        |
                     --------
                     """,
-                """
+            """
                        ------
                        |    |
                        |    O
@@ -50,7 +50,7 @@ public class Hangman {
                        |
                     --------
                     """,
-                """
+            """
                        ------
                        |    |
                        |    O
@@ -59,7 +59,7 @@ public class Hangman {
                        |
                     --------
                     """,
-                """
+            """
                        ------
                        |    |
                        |    O
@@ -70,7 +70,8 @@ public class Hangman {
                     """
         };
     }
-    public String getHangmanStage(int attemptsLeft){
+
+    public String getHangmanStage(int attemptsLeft) {
         return hangmanStages[attemptsLeft];
     }
 }

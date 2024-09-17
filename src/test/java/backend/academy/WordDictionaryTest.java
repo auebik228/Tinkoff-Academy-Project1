@@ -16,7 +16,7 @@ public class WordDictionaryTest {
 
     @Test
     public void testGetRandomWordEasyAndAnimals() {
-        String word = wordDictionary.getRandomWord(DifficultyLevels.NONE, "animals");
+        String word = wordDictionary.getRandomWord(DifficultyLevels.EASY, "animals");
         assertNotNull(word, "Слово не должно быть null");
         assertTrue(
             wordDictionary.easyWords().get("animals").contains(word),

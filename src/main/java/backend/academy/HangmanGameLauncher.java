@@ -8,7 +8,6 @@ public class HangmanGameLauncher {
         DifficultyLevels difficulty = ui.requestDifficulty();
         String category = ui.requestCategory();
         String word = dict.getRandomWord(difficulty, category);
-
         HangmanGame hangmanGame = new HangmanGame(word, ui);
         hangmanGame.startGame();
     }

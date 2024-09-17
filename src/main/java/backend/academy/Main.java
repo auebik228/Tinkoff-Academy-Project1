@@ -1,9 +1,6 @@
 package backend.academy;
 
 import lombok.experimental.UtilityClass;
-import org.checkerframework.checker.units.qual.C;
-
-import java.util.Scanner;
 
 @UtilityClass
 public class Main {
