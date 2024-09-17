@@ -1,6 +1,7 @@
 package backend.academy;
 
 import lombok.Getter;
+import java.security.SecureRandom;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,22 +33,22 @@ import java.util.Random;
         easyWords.put("countries", List.of("china", "india", "spain", "italy", "egypt"));
     }
 
-    public String getRandomWord(String difficulty, String category) {
-        Random random = new Random();
+    public String getRandomWord(DifficultyLevels difficulty, String category) {
+        SecureRandom random = new SecureRandom();
         Map<String, List<String>> chosenDictionary;
 
-        if (difficulty.isEmpty()) {
-            String[] difficulties = new String[] {"eazy", "medium", "hard"};
+        if (difficulty.equals(DifficultyLevels.NONE)) {
+            DifficultyLevels[] difficulties = new DifficultyLevels[] {DifficultyLevels.EASY, DifficultyLevels.MEDIUM, DifficultyLevels.HARD};
             difficulty = difficulties[random.nextInt(difficulties.length)];
         }
-        switch (difficulty.toLowerCase()) {
-            case "hard":
+        switch (difficulty) {
+            case DifficultyLevels.HARD:
                 chosenDictionary = hardWords;
                 break;
-            case "medium":
+            case DifficultyLevels.MEDIUM:
                 chosenDictionary = mediumWords;
                 break;
-            case "easy":
+            case DifficultyLevels.EASY:
                 chosenDictionary = easyWords;
             default:
                 chosenDictionary = easyWords;
@@ -55,7 +56,7 @@ import java.util.Random;
         }
 
         List<String> wordList;
-        if (category.isEmpty()) {
+        if (category.equalsIgnoreCase("none")) {
             Object[] categories = chosenDictionary.keySet().toArray();
             String categoryRandom = (String) categories[random.nextInt(categories.length)];
             wordList = chosenDictionary.get(categoryRandom);

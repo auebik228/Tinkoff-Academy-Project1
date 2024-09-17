@@ -1,5 +1,5 @@
-import backend.academy.WordDictionary;
-import org.junit.Before;
+package backend.academy;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -16,7 +16,7 @@ public class WordDictionaryTest {
 
     @Test
     public void testGetRandomWordEasyAndAnimals() {
-        String word = wordDictionary.getRandomWord("easy", "animals");
+        String word = wordDictionary.getRandomWord(DifficultyLevels.NONE, "animals");
         assertNotNull(word, "Слово не должно быть null");
         assertTrue(
             wordDictionary.easyWords().get("animals").contains(word),
@@ -25,7 +25,7 @@ public class WordDictionaryTest {
 
     @Test
     public void testGetRandomWordMediumAndFruits() {
-        String word = wordDictionary.getRandomWord("medium", "fruits");
+        String word = wordDictionary.getRandomWord(DifficultyLevels.MEDIUM, "fruits");
         assertNotNull(word, "Слово не должно быть null");
         assertTrue(
             wordDictionary.mediumWords().get("fruits").contains(word),
@@ -34,7 +34,7 @@ public class WordDictionaryTest {
 
     @Test
     public void testGetRandomWordHardAndCountries() {
-        String word = wordDictionary.getRandomWord("hard", "countries");
+        String word = wordDictionary.getRandomWord(DifficultyLevels.HARD, "countries");
         assertNotNull(word, "Слово не должно быть null");
         assertTrue(
             wordDictionary.hardWords().get("countries").contains(word),
@@ -43,7 +43,7 @@ public class WordDictionaryTest {
 
     @Test
     public void testGetRandomWordRandomDifficultyAndRandomCategory() {
-        String word = wordDictionary.getRandomWord("", "");
+        String word = wordDictionary.getRandomWord(DifficultyLevels.NONE, "none");
         assertNotNull(word, "Слово не должно быть null");
         assertTrue(
             wordDictionary.hardWords().get("countries").contains(word) ||
