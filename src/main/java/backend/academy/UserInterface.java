@@ -23,6 +23,10 @@ public class UserInterface {
         }
     }
 
+    public void showHint(String hint) {
+        consoleIO.println("Подсказка: " + hint);
+    }
+
     public DifficultyLevels requestDifficulty() {
         while (true) {
             consoleIO.println("Выберите уровень сложности easy, medium, hard или none для случайного выбора: ");

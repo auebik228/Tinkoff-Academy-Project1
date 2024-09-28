@@ -3,10 +3,11 @@ package backend.academy;
 public class HangmanGame {
     private final GameState gameState;
     private final UserInterface ui;
+    private final int hintThreshold = 3;
 
-    public HangmanGame(String word, UserInterface ui) {
+    public HangmanGame(WordWithHint wordWithHint, UserInterface ui) {
         this.ui = ui;
-        this.gameState = new GameState(word);
+        this.gameState = new GameState(wordWithHint);
     }
 
     public void startGame() {
@@ -22,11 +23,17 @@ public class HangmanGame {
             gameState.addGuessedLetter(guessedLetter);
             boolean isCorrect = guessLetter(guessedLetter);
             if (isCorrect) {
-                gameState.revealLetter(guessedLetter); // Передаём букву для раскрытия
+                gameState.revealLetter(guessedLetter);
                 ui.congratulateForLetter(guessedLetter, String.valueOf(gameState.getKnownPartOfWord()));
             } else {
-                gameState.decrementAttempts(); // Уменьшаем количество оставшихся попыток
+                gameState.incrementAttempts();
                 ui.displayHangman(gameState.getAttemptsLeft(), gameState.getMaxAttempts());
+
+                if (!gameState.isHintShown()
+                    && (gameState.getMaxAttempts() - gameState.getAttemptsLeft()) == hintThreshold) {
+                    ui.showHint(gameState.getHint());
+                    gameState.showHint();
+                }
             }
         }
 
@@ -38,13 +45,11 @@ public class HangmanGame {
     }
 
     private boolean guessLetter(char guessedLetter) {
-        boolean isCorrect = false;
         for (char c : gameState.getWord()) {
             if (c == guessedLetter) {
-                isCorrect = true;
-                break;
+                return true;
             }
         }
-        return isCorrect;
+        return false;
     }
 }

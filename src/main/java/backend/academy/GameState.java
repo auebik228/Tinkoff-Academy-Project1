@@ -10,13 +10,17 @@ public class GameState {
     private final int maxAttempts = 7;
     private int attemptsLeft;
     private final Set<Character> guessedLetters;
+    private final String hint;
+    private boolean hintShown;
 
-    public GameState(String word) {
-        this.word = word.toLowerCase().toCharArray();
-        this.knownPartOfWord = new char[word.length()];
+    public GameState(WordWithHint wordWithHint) {
+        this.word = wordWithHint.getWord().toLowerCase().toCharArray();
+        this.knownPartOfWord = new char[word.length];
         Arrays.fill(this.knownPartOfWord, '_');
-        this.attemptsLeft = 0; // Изначально доступно maxAttempts
+        this.attemptsLeft = 0;
         this.guessedLetters = new HashSet<>();
+        this.hint = wordWithHint.getHint();
+        this.hintShown = false;
     }
 
     public char[] getWord() {
@@ -35,7 +39,7 @@ public class GameState {
         return attemptsLeft;
     }
 
-    public void decrementAttempts() {
+    public void incrementAttempts() {
         this.attemptsLeft++;
     }
 
@@ -53,6 +57,18 @@ public class GameState {
 
     public boolean isMaxAttemptsReached() {
         return attemptsLeft == maxAttempts;
+    }
+
+    public String getHint() {
+        return hint;
+    }
+
+    public boolean isHintShown() {
+        return hintShown;
+    }
+
+    public void showHint() {
+        this.hintShown = true;
     }
 
     public void revealLetter(char letter) {

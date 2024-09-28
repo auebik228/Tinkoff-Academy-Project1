@@ -16,7 +16,7 @@ public class WordDictionaryTest {
 
     @Test
     public void testGetRandomWordEasyAndAnimals() {
-        String word = wordDictionary.getRandomWord(DifficultyLevels.EASY, "animals");
+        WordWithHint word = wordDictionary.getRandomWord(DifficultyLevels.EASY, "animals");
         assertNotNull(word, "Слово не должно быть null");
         assertTrue(
             wordDictionary.easyWords().get("animals").contains(word),
@@ -25,7 +25,7 @@ public class WordDictionaryTest {
 
     @Test
     public void testGetRandomWordMediumAndFruits() {
-        String word = wordDictionary.getRandomWord(DifficultyLevels.MEDIUM, "fruits");
+       WordWithHint word = wordDictionary.getRandomWord(DifficultyLevels.MEDIUM, "fruits");
         assertNotNull(word, "Слово не должно быть null");
         assertTrue(
             wordDictionary.mediumWords().get("fruits").contains(word),
@@ -34,7 +34,7 @@ public class WordDictionaryTest {
 
     @Test
     public void testGetRandomWordHardAndCountries() {
-        String word = wordDictionary.getRandomWord(DifficultyLevels.HARD, "countries");
+        WordWithHint word = wordDictionary.getRandomWord(DifficultyLevels.HARD, "countries");
         assertNotNull(word, "Слово не должно быть null");
         assertTrue(
             wordDictionary.hardWords().get("countries").contains(word),
@@ -43,7 +43,7 @@ public class WordDictionaryTest {
 
     @Test
     public void testGetRandomWordRandomDifficultyAndRandomCategory() {
-        String word = wordDictionary.getRandomWord(DifficultyLevels.NONE, "none");
+        WordWithHint word = wordDictionary.getRandomWord(DifficultyLevels.NONE, "none");
         assertNotNull(word, "Слово не должно быть null");
         assertTrue(
             wordDictionary.hardWords().get("countries").contains(word) ||
